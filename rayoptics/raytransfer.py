@@ -53,7 +53,7 @@ class Ray:
              [0.0, 0.0, 0.0, 1.0]]
         )
         self.rayVectorABCD = np.dot(M, self.getRayVectorABCD())
-        self.z = self.z + d
+        self.z = self.z + (self.kz / np.abs(self.kz))*d
         self.updatePosition()
         self.path = np.concatenate(
             (self.path, 
@@ -148,6 +148,14 @@ class Ray:
         self.sphericalInterfaceRefraction(R1,n1,n2)
         self.propagate(t)
         self.sphericalInterfaceRefraction(R2,n2,n1)
+        self.updatePosition()
+
+        return self.rayVectorABCD
+
+
+    def planeReflection(self):
+
+        self.kz = -self.kz
         self.updatePosition()
 
         return self.rayVectorABCD
